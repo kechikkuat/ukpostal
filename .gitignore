@@ -1,6 +1,7 @@
 HELP.md
 .gradle
 build/
+/src/main/resources/ukpostcodes.zip
 !gradle/wrapper/gradle-wrapper.jar
 !**/src/main/**/build/
 !**/src/test/**/build/
