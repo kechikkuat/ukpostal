@@ -8,11 +8,10 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Component;
+import org.springframework.util.FileCopyUtils;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileReader;
-import java.io.IOException;
+import java.io.*;
+import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 
 @Component
@@ -36,12 +35,14 @@ public class PostcodeLoader implements CommandLineRunner {
             Resource resource = new ClassPathResource("ukpostcodes.csv");
 
             try {
-                File file = resource.getFile();
-                if(file.exists()){
+                InputStream in = resource.getInputStream();
+                byte[] bdata = FileCopyUtils.copyToByteArray(in);
+                String data = new String(bdata, StandardCharsets.UTF_8);
+                if(data.length() > 0){
                     String line = "";
                     String delimiter = ",";
 
-                    BufferedReader br = new BufferedReader(new FileReader(file.getAbsolutePath()));
+                    BufferedReader br = new BufferedReader(new StringReader(data));
                     br.readLine();
                     while ((line = br.readLine()) != null){
                         String[] post = line.split(delimiter);

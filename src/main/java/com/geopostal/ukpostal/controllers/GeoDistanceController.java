@@ -39,6 +39,49 @@ public class GeoDistanceController {
     }
     // </editor-fold>
 
+    // <editor-fold defaultstate="collapsed" desc="(/api/geo) To List all Available UK Postcode ">
+    @GetMapping("{postcodeId}")
+    public ResponseEntity<Postcode> getPostcode(@PathVariable Long postcodeId){
+        Postcode postcode = postcodeService.findById(postcodeId);
+        if(postcode == null){
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+
+        return new ResponseEntity<>(postcode, HttpStatus.OK);
+    }
+
+    @PutMapping("{postcodeId}")
+    public ResponseEntity<Postcode> updatePostcode(@PathVariable Long postcodeId, @RequestBody Postcode postcode){
+        if(postcode == null){
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+
+        //Check the Required value & Value validity
+        //Return bad request if the value null / not valid
+        if(postcode.getPostcode() == null
+                || postcode.getLatitude() == null
+                || postcode.getLongitude() == null){
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+
+        //Latitude value should be in this range (> -90 & 90<)
+        //Longitude value should be in this range (> -180 & 180<)
+        //Postcode should not be more than 10 char
+        if((postcode.getLatitude() < -90 && postcode.getLatitude() > 90)
+                && !(postcode.getLongitude() < -180 && postcode.getLongitude() > 180) && postcode.getPostcode().length() > 10){
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+
+        postcode = postcodeService.update(postcodeId, postcode);
+        //if failed to update then return BAD_REQUEST
+        if(postcode == null){
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+
+        return new ResponseEntity<>(postcode, HttpStatus.OK);
+    }
+    // </editor-fold>
+
     //<editor-fold defaultstate="collapsed" desc="(calculate/distance) This section is the process to calculate the distance between Postcode">
     @PostMapping("calculate/distance")
     public ResponseEntity<GeoDistanceVM> calculateDistance(@RequestParam String... postcodes){

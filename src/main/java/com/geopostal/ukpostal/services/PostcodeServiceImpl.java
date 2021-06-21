@@ -27,6 +27,15 @@ public class PostcodeServiceImpl implements PostcodeService{
     }
 
     @Override
+    public Postcode findById(Long id){
+        Postcode obj = postcodeRepo.findById(id).orElse(null);
+        if(obj == null){
+            LOGGER.info("Cannot find record with id = " + id);
+        }
+        return obj;
+    }
+
+    @Override
     public Postcode findPostcodeByPostcode(String postcode){
         Postcode obj = postcodeRepo.findPostcodeByPostcode(postcode);
         if(obj == null){
@@ -38,5 +47,20 @@ public class PostcodeServiceImpl implements PostcodeService{
     @Override
     public Postcode insert(Postcode postcode) {
         return postcodeRepo.save(postcode);
+    }
+
+    @Override
+    public Postcode update(Long postcodeId, Postcode postcode) {
+        Postcode postcodeFromDb = findById(postcodeId);
+        if(postcodeFromDb != null){
+            postcodeFromDb.setPostcode(postcode.getPostcode());
+            postcodeFromDb.setLatitude(postcode.getLatitude());
+            postcodeFromDb.setLongitude(postcode.getLongitude());
+
+            return postcodeRepo.save(postcode);
+        }
+
+        //Return null if failed to update/ cannot find existing data in DB
+        return null;
     }
 }
