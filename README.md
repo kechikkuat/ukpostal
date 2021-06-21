@@ -15,10 +15,10 @@ $ java -jar "\absolute\path\to\the\jar" com.geopostal.ukpostal.GeoUkPostalApplic
 2. Right click and Run As -> Java Application
 
 <h1>List of API</h1>
-1./api/geo GET<br/>
-2./api/geo/{postcodeId} GET <br/>
-2./api/geo/{postcodeId} PUT <br/>
-3./api/geo/calculate/distance POST {Params: postcodes} can accept more than 2 postcode<br/>
+1.{/api/geo} GET<br/>
+2.{/api/geo/{postcodeId}} GET <br/>
+2.{/api/geo/{postcodeId}} PUT <br/>
+3.{/api/geo/calculate/distance} POST {Params: postcodes} can accept more than 2 postcode<br/>
 
 <h1>Technology</h1>
 1. Java JDK 8<br/>
