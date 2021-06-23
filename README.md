@@ -1,4 +1,5 @@
 Hi All, <br/>
+For more info please read the documetation (UKPostal Guide.pdf)
 <h1>Introduction</h1>
 This main program is to calulcate the distance (in Straight line) between 2 or more coordinate by the UK Postal Code via REST API. <br/>
 You can also update the postcode and coordinate via the REST API. <br/>
