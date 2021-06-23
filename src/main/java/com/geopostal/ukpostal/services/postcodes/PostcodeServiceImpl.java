@@ -1,5 +1,6 @@
-package com.geopostal.ukpostal.services;
+package com.geopostal.ukpostal.services.postcodes;
 
+import com.geopostal.ukpostal.exceptions.PostcodeNotFoundException;
 import com.geopostal.ukpostal.model.Postcode;
 import com.geopostal.ukpostal.repositories.PostcodeRepo;
 import org.slf4j.Logger;
@@ -58,9 +59,8 @@ public class PostcodeServiceImpl implements PostcodeService{
             postcodeFromDb.setLongitude(postcode.getLongitude());
 
             return postcodeRepo.save(postcode);
+        }else{
+            throw new PostcodeNotFoundException(postcodeId);
         }
-
-        //Return null if failed to update/ cannot find existing data in DB
-        return null;
     }
 }

@@ -1,8 +1,9 @@
-package com.geopostal.ukpostal.controllers;
+package com.geopostal.ukpostal.controllers.geodistance;
 
+import com.geopostal.ukpostal.exceptions.PostcodeNotFoundException;
 import com.geopostal.ukpostal.model.Postcode;
 import com.geopostal.ukpostal.model.enumerations.StatusCode;
-import com.geopostal.ukpostal.services.PostcodeService;
+import com.geopostal.ukpostal.services.postcodes.PostcodeService;
 import com.geopostal.ukpostal.utils.GeoDistanceUtil;
 import com.geopostal.ukpostal.viewmodels.DistanceResultVM;
 import com.geopostal.ukpostal.viewmodels.GeoDistanceVM;
@@ -44,15 +45,16 @@ public class GeoDistanceController {
     public ResponseEntity<Postcode> getPostcode(@PathVariable Long postcodeId){
         Postcode postcode = postcodeService.findById(postcodeId);
         if(postcode == null){
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+            throw new PostcodeNotFoundException(postcodeId);
         }
 
         return new ResponseEntity<>(postcode, HttpStatus.OK);
     }
 
-    @PutMapping("{postcodeId}")
+    @PostMapping("{postcodeId}")
     public ResponseEntity<Postcode> updatePostcode(@PathVariable Long postcodeId, @RequestBody Postcode postcode){
         if(postcode == null){
+            LOGGER.error("Postcode doesn't passed the validation");
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
 
@@ -61,6 +63,7 @@ public class GeoDistanceController {
         if(postcode.getPostcode() == null
                 || postcode.getLatitude() == null
                 || postcode.getLongitude() == null){
+            LOGGER.error("Postcode doesn't passed the validation");
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
 
@@ -69,16 +72,18 @@ public class GeoDistanceController {
         //Postcode should not be more than 10 char
         if((postcode.getLatitude() < -90 && postcode.getLatitude() > 90)
                 && !(postcode.getLongitude() < -180 && postcode.getLongitude() > 180) && postcode.getPostcode().length() > 10){
+            LOGGER.error("Postcode doesn't passed the validation");
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
 
         postcode = postcodeService.update(postcodeId, postcode);
         //if failed to update then return BAD_REQUEST
         if(postcode == null){
+            LOGGER.error("Postcode is null (update failed)");
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
 
-        return new ResponseEntity<>(postcode, HttpStatus.OK);
+        return getPostcode(postcodeId);
     }
     // </editor-fold>
 

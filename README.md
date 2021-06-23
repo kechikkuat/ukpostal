@@ -15,10 +15,16 @@ $ java -jar "\absolute\path\to\the\jar" com.geopostal.ukpostal.GeoUkPostalApplic
 2. Right click and Run As -> Java Application
 
 <h1>List of API</h1>
-1./api/geo GET<br/>
-2./api/geo/{postcodeId} GET <br/>
-2./api/geo/{postcodeId} PUT <br/>
-3./api/geo/calculate/distance POST {Params: postcodes}<br/>
+1.POST  /public/api/users/register  {Params: username & password}   {Return: Redirect to /public/api/users/login}<br/>
+2.POST  /public/api/users/login     {Params: username & password}   {Return: String (AuthToken)}<br/>
+2.GET   /logout                                                     {Return: boolean}<br/>
+3.GET   /api/geo                                                    {Return: List of Postcode available in DB}<br/>
+4.GET   /api/geo/{postcodeId}                                       {Return: Postcode based on postcodeId}<br/>
+5.POST  /api/geo/{postcodeId}                                       {Return: Update the Postcode data and Redirect to /public/api/users/login}<br/>
+6.POST  /api/geo/calculate/distance {Params: postcodes}             {Return: distance calculation and Postcode data}<br/>
+
+<h1>How To Use (POSTMAN)</h1>
+Read the documentation in Repository (UKPostal Guide.pdf)
 
 <h1>Technology</h1>
 1. Java JDK 8<br/>
@@ -32,6 +38,3 @@ $ java -jar "\absolute\path\to\the\jar" com.geopostal.ukpostal.GeoUkPostalApplic
 <h3>Note</h3>
 To test the generated WKT String you can go here https://arthur-e.github.io/Wicket/sandbox-gmaps3.html and enter input from `generatedWKTString` and you can see the line on Map
 <br/><br/>
-Work In Progress<br/>
-1. Unit Test using JUnit<br/>
-2. Add Security when requesting the API

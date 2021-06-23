@@ -1,4 +1,4 @@
-package com.geopostal.ukpostal.services;
+package com.geopostal.ukpostal.services.postcodes;
 
 import com.geopostal.ukpostal.model.Postcode;
 
